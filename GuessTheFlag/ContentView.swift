@@ -11,6 +11,8 @@ struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
     @State private var currentScore = 0
+    @State private var gameQuestionCount = 0
+    @State private var gameComplete = false
     
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     
@@ -48,6 +50,11 @@ struct ContentView: View {
                         Button{
                             // Flag was tapped
                             flagTapped(number)
+                            gameQuestionCount += 1
+                            
+                            if gameQuestionCount >= 8 {
+                                gameComplete = true
+                            }
                         } label: {
                             Image(countries[number])
                                 .renderingMode(.original)
@@ -79,6 +86,11 @@ struct ContentView: View {
         } message: {
             Text("Your score is \(currentScore)")
         }
+        .alert("Game complete", isPresented: $gameComplete){
+            Button("Game Over", action: resetGame)
+        } message: {
+            Text("Game is complete. You had 8 questions. Your final score is: \(currentScore)")
+        }
         
     }
     
@@ -87,7 +99,7 @@ struct ContentView: View {
             scoreTitle = "Correct"
             currentScore += 1
         } else {
-            scoreTitle = "Wrong"
+            scoreTitle = "Wrong that was the \(countries[number]) flag"
         }
         
         showingScore = true
@@ -97,6 +109,13 @@ struct ContentView: View {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
+    
+    func resetGame(){
+        currentScore = 0
+        gameComplete = false
+        showingScore = false
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
