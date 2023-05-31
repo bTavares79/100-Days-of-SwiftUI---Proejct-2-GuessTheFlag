@@ -7,6 +7,19 @@
 
 import SwiftUI
 
+
+// Project 3 Challenge update for this project
+struct FlagImage: View {
+    var flagString: String
+    
+    var body: some  View {
+        Image(flagString)
+            .renderingMode(.original)
+            .cornerRadius(10)
+            .shadow(radius: 5)
+    }
+}
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -56,10 +69,11 @@ struct ContentView: View {
                                 gameComplete = true
                             }
                         } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
+//                            Image(countries[number])
+//                                .renderingMode(.original)
+//                                .cornerRadius(10)
+//                                .shadow(radius: 5)
+                            FlagImage(flagString: countries[number])
                         }
                     }
                 }
